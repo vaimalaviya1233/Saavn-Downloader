@@ -424,8 +424,12 @@ def downloadSongs(songs_json, album_name='songs', artist_name='Non-Artist'):
                print("Downloaded %s" % filename)
             else :
                 print("Downloading %s" % filename)
-                obj = SmartDL(dec_url, location)
-                obj.start()
+                # obj = SmartDL(dec_url, location)
+                # obj.start()
+                res = requests.get(dec_url, stream=True)
+                with open(location,'wb') as song_file:
+                    for chunk in res.iter_content(4096):
+                        song_file.write(chunk)
                 try:
                     name = songs_json['name'] if ('name' in songs_json) else songs_json['listname']
                 except:
